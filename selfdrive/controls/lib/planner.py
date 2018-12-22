@@ -471,7 +471,7 @@ class Planner(object):
       self.model_dead = True
 
     if cur_time - self.last_l20 > 0.5:
-      self.radar_dead = True
+      self.radar_dead = CS.hasradar
     # **** send the plan ****
     plan_send = messaging.new_message()
     plan_send.init('plan')
