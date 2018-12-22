@@ -239,6 +239,7 @@ class CarState(object):
     # copy can_valid
     self.can_valid = cp.can_valid
     self.cam_can_valid = cp_cam.can_valid
+    self.hasradar = True
 
     msg = messaging.recv_one_or_none(self.gps_location)
     if msg is not None:
