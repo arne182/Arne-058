@@ -204,6 +204,7 @@ class CarState(object):
     self.right_blinker_on = pt_cp.vl["BCMTurnSignals"]['TurnSignals'] == 2
 
     if self.car_fingerprint in (CAR.VOLT, CAR.MALIBU, CAR.HOLDEN_ASTRA):
+      self.hasradar = True
       self.park_brake = pt_cp.vl["EPBStatus"]['EPBClosed']
       self.main_on = pt_cp.vl["ECMEngineStatus"]['CruiseMainOn']
       self.acc_active = False
@@ -214,6 +215,7 @@ class CarState(object):
       else:
         self.regen_pressed = False
     if self.car_fingerprint == CAR.CADILLAC_CT6:
+      self.hasradar = True
       self.park_brake = False
       self.main_on = False
       self.acc_active = pt_cp.vl["ASCMActiveCruiseControlStatus"]['ACCCmdActive']
@@ -221,6 +223,7 @@ class CarState(object):
       self.regen_pressed = False
       self.pcm_acc_status = int(self.acc_active)
     if self.car_fingerprint == CAR.EQUINOX:
+      self.hasradar = False
       self.park_brake = pt_cp.vl["EPBStatus"]['EPBClosed']
       self.main_on = pt_cp.vl["ECMEngineStatus"]['CruiseMainOn']
       self.acc_active = False
