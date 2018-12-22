@@ -191,7 +191,7 @@ class CarInterface(object):
 
     # create message
     ret = car.CarState.new_message()
-
+    ret.hasradar = self.CS.hasradar
     # speeds
     ret.vEgo = self.CS.v_ego
     ret.aEgo = self.CS.a_ego
