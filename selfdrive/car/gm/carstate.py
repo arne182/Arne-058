@@ -220,6 +220,12 @@ class CarState(object):
       self.esp_disabled = False
       self.regen_pressed = False
       self.pcm_acc_status = int(self.acc_active)
+    if self.car_fingerprint == CAR.EQUINOX:
+      self.park_brake = pt_cp.vl["EPBStatus"]['EPBClosed']
+      self.main_on = pt_cp.vl["ECMEngineStatus"]['CruiseMainOn']
+      self.acc_active = False
+      self.esp_disabled = pt_cp.vl["ESPStatus"]['TractionControlOn'] != 1
+      self.pcm_acc_status = pt_cp.vl["AcceleratorPedal2"]['CruiseState']
 
     # Brake pedal's potentiometer returns near-zero reading
     # even when pedal is not pressed.
