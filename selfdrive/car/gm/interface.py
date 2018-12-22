@@ -102,6 +102,17 @@ class CarInterface(object):
       ret.safetyModel = car.CarParams.SafetyModels.gm
       ret.steerRatio = 15.7
       ret.steerRatioRear = 0.
+      
+    elif candidate == CAR.EQUINOX:
+      # kg of standard extra cargo to count for driver, gas, etc...
+      ret.mass = 1508 + std_cargo
+      ret.wheelbase = 2.725
+      # Remaining parameters copied from Volt for now
+      ret.centerToFront = ret.wheelbase * 0.4
+      ret.minEnableSpeed = 24 * CV.MPH_TO_MS
+      ret.safetyModel = car.CarParams.SafetyModels.gm
+      ret.steerRatio = 15.0
+      ret.steerRatioRear = 0.
 
     elif candidate == CAR.CADILLAC_CT6:
       # engage speed is decided by pcm
