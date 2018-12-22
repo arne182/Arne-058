@@ -123,7 +123,8 @@ struct CarState {
   blindspotside @30 :Float32;
   readdistancelines @31 :Float32;
   gasbuttonstatus @32 :Float32;
-
+  hasradar @33 :Bool;
+  
   # lock info
   doorOpen @24 :Bool;
   seatbeltUnlatched @25 :Bool;
