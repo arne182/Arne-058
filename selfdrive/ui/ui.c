@@ -2074,6 +2074,8 @@ int main() {
 
   const float BRIGHTNESS_B = LEON? 10.0 : 5.0;
   const float BRIGHTNESS_M = LEON? 2.6 : 1.3;
+  bool touchedbefore = false;
+  int touch_x_last = -1, touch_y_last = -1;
   #define NEO_BRIGHTNESS 100
 
   float smooth_brightness = BRIGHTNESS_B;
@@ -2102,14 +2104,26 @@ int main() {
     bb_ui_poll_update(s);
     // awake on any touch
     int touch_x = -1, touch_y = -1;
-    int touched = touch_poll(&touch, &touch_x, &touch_y, s->awake ? 0 : 500);
+    int touched = touch_poll(&touch, &touch_x, &touch_y, s->awake ? 0 : 100);
+    
     if (touched == 1) {
       // touch event will still happen :(
       set_awake(s, true);
-      // BB check touch area
-      bb_handle_ui_touch(s,touch_x,touch_y);
+      dashcam(s, -1, -1);
+      touchedbefore = true;
+      touch_x_last = touch_x;
+      touch_y_last = touch_y;
+    } else {
+      if (touchedbefore){
+        // BB check touch area
+	bb_handle_ui_touch(s,touch_x_last,touch_y_last);
+	dashcam(s, touch_x_last, touch_y_last);
+        touchedbefore = false;
+      } else {
+	dashcam(s, -1, -1);
+      }
     }
-
+    
     // manage wakefulness
     if (s->awake_timeout > 0) {
       s->awake_timeout--;
@@ -2118,7 +2132,6 @@ int main() {
     }
 
     if (s->awake) {
-      dashcam(s, touch_x, touch_y);
       ui_draw(s);
       glFinish();
       should_swap = true;
