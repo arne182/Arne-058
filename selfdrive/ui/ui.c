@@ -2100,11 +2100,10 @@ int main() {
 
     ui_update(s);
 
-    //BB Update our cereal polls
-    bb_ui_poll_update(s);
+
     // awake on any touch
     int touch_x = -1, touch_y = -1;
-    int touched = touch_poll(&touch, &touch_x, &touch_y, s->awake ? 0 : 100);
+    int touched = touch_poll(&touch, &touch_x, &touch_y, s->awake ? 0 : 500);
     
     if (touched == 1) {
       // touch event will still happen :(
@@ -2113,17 +2112,24 @@ int main() {
       touchedbefore = true;
       touch_x_last = touch_x;
       touch_y_last = touch_y;
+      s->b.touch_last_width = s->scene.ui_viz_rw;
     } else {
-      if (touchedbefore){
+      if (touchedbefore && (s->b.touch_last_width != s->scene.ui_viz_rw)){
         // BB check touch area
 	bb_handle_ui_touch(s,touch_x_last,touch_y_last);
 	dashcam(s, touch_x_last, touch_y_last);
         touchedbefore = false;
+        touch_x_last = -1;
+        touch_y_last = -1;
+        s->b.touch_last_width = s->scene.ui_viz_rw;
       } else {
 	dashcam(s, -1, -1);
       }
     }
-    
+	  
+    //BB Update our cereal polls
+    bb_ui_poll_update(s);
+	  
     // manage wakefulness
     if (s->awake_timeout > 0) {
       s->awake_timeout--;
