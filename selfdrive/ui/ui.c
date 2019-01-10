@@ -2103,7 +2103,7 @@ int main() {
 
     // awake on any touch
     int touch_x = -1, touch_y = -1;
-    int touched = touch_poll(&touch, &touch_x, &touch_y, s->awake ? 100 : 500);
+    int touched = touch_poll(&touch, &touch_x, &touch_y, s->awake ? 10 : 500);
     
     if (touched == 1) {
       // touch event will still happen :(
