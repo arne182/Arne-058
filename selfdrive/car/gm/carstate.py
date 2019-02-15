@@ -206,6 +206,9 @@ class CarState(object):
     self.steer_torque_driver = pt_cp.vl["PSCMStatus"]['LKADriverAppldTrq']
     self.steer_override = abs(self.steer_torque_driver) > STEER_THRESHOLD
 
+    # 0 - inactive, 1 - active, 2 - temporary limited, 3 - failed
+    self.lkas_status = pt_cp.vl["PSCMStatus"]['LKATorqueDeliveredStatus']
+    self.steer_not_allowed = not is_eps_status_ok(self.lkas_status, self.car_fingerprint)
 
     # 1 - open, 0 - closed
     self.door_all_closed = (pt_cp.vl["BCMDoorBeltStatus"]['FrontLeftDoor'] == 0 and
@@ -244,14 +247,6 @@ class CarState(object):
       self.regen_pressed = False
       self.pcm_acc_status = int(self.acc_active)
 
-    # 0 - inactive, 1 - active, 2 - temporary limited, 3 - failed
-    if self.lkMode and self.v_ego < 17.8 and self.pcm_acc_status != 0 and (self.left_blinker_on or self.right_blinker_on):
-      # Disable LKA when below 40 MPH and turn signal is on
-      self.lkas_status = 0
-    else:
-      self.lkas_status = pt_cp.vl["PSCMStatus"]['LKATorqueDeliveredStatus']
-    self.steer_not_allowed = not is_eps_status_ok(
-        self.lkas_status, self.car_fingerprint)
 
     # Brake pedal's potentiometer returns near-zero reading
     # even when pedal is not pressed.

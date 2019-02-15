@@ -47,7 +47,7 @@ class UIButtons:
             return file_matches
         else:
             #we don't have all the data, ignore
-            print "labels file is bad"
+            print("labels file is bad")
             return False
 
 
@@ -69,7 +69,7 @@ class UIButtons:
                 self.btns[i].btn_status = ord(indata[i]) - 48
         else:
             #something wrong with the file
-            print "status file is bad"
+            print("status file is bad")
 
     def send_button_info(self):
         if self.isLive:
