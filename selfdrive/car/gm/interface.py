@@ -43,7 +43,7 @@ class CarInterface(object):
 
   @staticmethod
   def compute_gb(accel, speed):
-  	# Ripped from compute_gb_honda in Honda's interface.py. Works well off shelf but may need more tuning
+    # Ripped from compute_gb_honda in Honda's interface.py. Works well off shelf but may need more tuning
     creep_brake = 0.0
     creep_speed = 2.68
     creep_brake_value = 0.10
@@ -274,6 +274,8 @@ class CarInterface(object):
           be.type = 'accelCruise' # Suppress resume button if we're resuming from stop so we don't adjust speed.
       elif but == CruiseButtons.DECEL_SET:
         be.type = 'decelCruise'
+        if not cruiseEnabled and not self.CS.lkMode:
+          self.CS.lkMode = True
       elif but == CruiseButtons.CANCEL:
         be.type = 'cancel'
       elif but == CruiseButtons.MAIN:
@@ -281,6 +283,13 @@ class CarInterface(object):
       buttonEvents.append(be)
 
     ret.buttonEvents = buttonEvents
+
+    if self.CS.lka_button and self.CS.lka_button != self.CS.prev_lka_button:
+      if self.CS.lkMode:
+        self.CS.lkMode = False
+      else:
+        self.CS.lkMode = True
+
     if self.CS.distance_button and self.CS.distance_button != self.CS.prev_distance_button:
       self.CS.follow_level -= 1
       if self.CS.follow_level < 1:
