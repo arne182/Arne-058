@@ -96,7 +96,7 @@ class CarState(object):
     # change lane delta angles and other params
     self.CL_MAXD_BP = [10., 32., 44.]
     self.CL_MAXD_A = [.358, 0.084, 0.040] #delta angle based on speed; needs fine tune, based on Tesla steer ratio of 16.75
-    self.CL_MIN_V = 8.9 # do not turn if speed less than x m/2; 20 mph = 8.9 m/s
+    self.CL_MIN_V = 22.5 # do not turn if speed less than x m/s; 20 mph = 8.9 m/s; 50 mph = 22.5 m/s
     # do not turn if actuator wants more than x deg for going straight; this should be interp based on speed
     self.CL_MAX_A_BP = [10., 44.]
     self.CL_MAX_A = [10., 10.] 
@@ -206,9 +206,6 @@ class CarState(object):
     self.steer_torque_driver = pt_cp.vl["PSCMStatus"]['LKADriverAppldTrq']
     self.steer_override = abs(self.steer_torque_driver) > STEER_THRESHOLD
 
-    # 0 - inactive, 1 - active, 2 - temporary limited, 3 - failed
-    self.lkas_status = pt_cp.vl["PSCMStatus"]['LKATorqueDeliveredStatus']
-    self.steer_not_allowed = not is_eps_status_ok(self.lkas_status, self.car_fingerprint)
 
     # 1 - open, 0 - closed
     self.door_all_closed = (pt_cp.vl["BCMDoorBeltStatus"]['FrontLeftDoor'] == 0 and
@@ -246,6 +243,15 @@ class CarState(object):
       self.esp_disabled = False
       self.regen_pressed = False
       self.pcm_acc_status = int(self.acc_active)
+
+    # 0 - inactive, 1 - active, 2 - temporary limited, 3 - failed
+    if self.lkMode and self.v_ego < 17.8 and self.pcm_acc_status != 0 and (self.left_blinker_on or self.right_blinker_on):
+      # Disable LKA when below 40 MPH and turn signal is on
+      self.lkas_status = 0
+    else:
+      self.lkas_status = pt_cp.vl["PSCMStatus"]['LKATorqueDeliveredStatus']
+    self.steer_not_allowed = not is_eps_status_ok(
+        self.lkas_status, self.car_fingerprint)
 
     # Brake pedal's potentiometer returns near-zero reading
     # even when pedal is not pressed.
