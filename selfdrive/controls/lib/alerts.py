@@ -228,6 +228,34 @@ ALERTS = [
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .1, .1, .1),
 
+  Alert(
+      "followLevelClose",
+      "FOLLOW LEVEL - CLOSE",
+      "The follow level is set to short",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
+
+  Alert(
+      "followLevelNormal",
+      "FOLLOW LEVEL - NORMAL",
+      "The follow level is set to moderate",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
+
+  Alert(
+      "followLevelSafe",
+      "FOLLOW LEVEL - SAFE",
+      "The follow level is set to long",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
+
+  Alert(
+      "followLevelAdaptive",
+      "FOLLOW LEVEL - CLOSE",
+      "The follow level is set to adaptive",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
+
   # Non-entry only alerts
   Alert(
       "wrongCarModeNoEntry",

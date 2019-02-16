@@ -74,6 +74,10 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     invalidGiraffeHonda @49;
     manualSteeringRequired @50;
     manualSteeringRequiredBlinkersOn @51;
+    followLevelClose @52;
+    followLevelNormal @53;
+    followLevelSafe @54;
+    followLevelAdaptive @55;
   }
 }
 
