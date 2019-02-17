@@ -293,19 +293,15 @@ class CarInterface(object):
     events = []
 
     if self.CS.distance_button and self.CS.distance_button != self.CS.prev_distance_button:
-      if self.CS.follow_level == 4:
-        self.CS.follow_level -= 1
       self.CS.follow_level -= 1
       if self.CS.follow_level < 1:
         self.CS.follow_level = 3
       if self.CS.follow_level == 1:
         events.append(create_event('followLevelClose', [ET.WARNING]))
       elif self.CS.follow_level == 2:
-        events.append(create_event('followLevelNormal', [ET.WARNING]))
+        events.append(create_event('followLevelAdaptive', [ET.WARNING]))
       elif self.CS.follow_level == 3:
         events.append(create_event('followLevelSafe', [ET.WARNING]))
-      else:
-        events.append(create_event('followLevelAdaptive', [ET.WARNING]))
 
     ret.gasbuttonstatus = self.CS.cstm_btns.get_button_status("gas")
 

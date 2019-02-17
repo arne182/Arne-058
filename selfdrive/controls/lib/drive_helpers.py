@@ -6,7 +6,7 @@ from common.params import Params
 # kph
 V_CRUISE_MAX = 169
 V_CRUISE_MIN = 8
-V_CRUISE_DELTA = 1  # MPH or KPH 
+V_CRUISE_DELTA = 2  # MPH or KPH 
 V_CRUISE_ENABLE_MIN = 7
 
 params = Params()
