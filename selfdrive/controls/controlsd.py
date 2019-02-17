@@ -303,7 +303,7 @@ def state_control(plan, CS, CP, state, events, v_cruise_kph, v_cruise_kph_last, 
     AM.add(str(e) + "Permanent", enabled, extra_text_1=extra_text_1, extra_text_2=extra_text_2)
   
   # Watch for Follow the Leader activity impacting Trip Time
-  if enabled and CC.hudControl.leadVisible:
+  if enabled and CC.hudControl.leadVisible and not CS.standstill:
     if (v_cruise_kph - CS.vEgo * CV.MS_TO_KPH) > followTheLeader_delta:
       followTheLeader_counter += 1
     elif (followTheLeader_counter > 0):
