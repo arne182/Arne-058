@@ -299,13 +299,13 @@ class CarInterface(object):
       if self.CS.follow_level < 1:
         self.CS.follow_level = 3
       if self.CS.follow_level == 1:
-        events.append(create_event('followLevelClose', [ET.NO_ENTRY]))
+        events.append(create_event('followLevelClose', [ET.WARNING]))
       elif self.CS.follow_level == 2:
-        events.append(create_event('followLevelNormal', [ET.NO_ENTRY]))
+        events.append(create_event('followLevelNormal', [ET.WARNING]))
       elif self.CS.follow_level == 3:
-        events.append(create_event('followLevelSafe', [ET.NO_ENTRY]))
+        events.append(create_event('followLevelSafe', [ET.WARNING]))
       else:
-        events.append(create_event('followLevelAdaptive', [ET.NO_ENTRY]))
+        events.append(create_event('followLevelAdaptive', [ET.WARNING]))
 
     ret.gasbuttonstatus = self.CS.cstm_btns.get_button_status("gas")
 
