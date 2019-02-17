@@ -256,6 +256,13 @@ ALERTS = [
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
 
+  Alert(
+      "followTheLeader",
+      "POSSIBLE TRIP DELAY",
+      "The lead car is operating below pace",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.chimeWarning1, 1., 2., 2.),
+
   # Non-entry only alerts
   Alert(
       "wrongCarModeNoEntry",

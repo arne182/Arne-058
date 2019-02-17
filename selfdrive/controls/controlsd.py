@@ -234,6 +234,12 @@ def state_control(plan, CS, CP, state, events, v_cruise_kph, v_cruise_kph_last, 
   enabled = isEnabled(state)
   active = isActive(state)
 
+  CC = car.CarControl.new_message()
+
+  followTheLeader_counter = 0
+  followTheLeader_delta = 6     # Delta between set speed and actual speed to be considered following
+  followTheLeader_timeOut = 60  # Seconds of following before prompt
+
   # check if user has interacted with the car
   driver_engaged = len(CS.buttonEvents) > 0 or \
                    v_cruise_kph != v_cruise_kph_last or \
@@ -279,7 +285,7 @@ def state_control(plan, CS, CP, state, events, v_cruise_kph, v_cruise_kph_last, 
   # Steering PID loop and lateral MPC
   actuators.steer, actuators.steerAngle = LaC.update(active, CS.vEgo, CS.steeringAngle, CS.steeringRate, 
                                                      CS.steeringPressed, plan.dPoly, angle_offset, CP, VM, PL,CS.blindspot,CS.leftBlinker,CS.rightBlinker)
- #BB added for ALCA support
+  #BB added for ALCA support
   #CS.pid = LaC.pid
   # Send a "steering required alert" if saturation count has reached the limit
   if LaC.sat_flag and CP.steerLimitAlert and CS.lkMode:
@@ -295,6 +301,18 @@ def state_control(plan, CS, CP, state, events, v_cruise_kph, v_cruise_kph_last, 
       else:
         extra_text_2 = str(int(round(Filter.MIN_SPEED * CV.MS_TO_MPH))) + " mph"
     AM.add(str(e) + "Permanent", enabled, extra_text_1=extra_text_1, extra_text_2=extra_text_2)
+  
+  # Watch for Follow the Leader activity impacting Trip Time
+  if enabled and CC.hudControl.leadVisible:
+    if (v_cruise_kph - CS.vEgo * CV.MS_TO_KPH) > followTheLeader_delta:
+      followTheLeader_counter += 1
+    elif (followTheLeader_counter > 0):
+      followTheLeader_counter -= 1
+    if followTheLeader_counter > followTheLeader_timeOut * 100:
+      events.append(create_event('followTheLeader', [ET.WARNING]))
+      followTheLeader_counter = 0
+  else:
+    followTheLeader_counter = 0
 
   AM.process_alerts(sec_since_boot())
 
@@ -406,7 +424,6 @@ def data_send(perception_state, plan, plan_ts, CS, CI, CP, VM, state, events, ac
     livempc.send(dat.to_bytes())
 
   return CC
-
 
 def controlsd_thread(gctx=None, rate=100, default_bias=0.):
   gc.disable()
