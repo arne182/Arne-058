@@ -183,7 +183,7 @@ class LatControl(object):
       if rightBlinker:
         if blindspot:
           self.blindspot_blink_counter_right_check = 0
-          print "debug: blindspot detected"
+          print("debug: blindspot detected")
         self.blindspot_blink_counter_right_check += 1
         if self.blindspot_blink_counter_right_check > 150:
           self.angle_steers_des -= 0#15
@@ -194,7 +194,7 @@ class LatControl(object):
       if leftBlinker:
         if blindspot:
           self.blindspot_blink_counter_left_check = 0
-          print "debug: blindspot detected"
+          print("debug: blindspot detected")
         self.blindspot_blink_counter_left_check += 1
         if self.blindspot_blink_counter_left_check > 150:
           self.angle_steers_des += 0#15
