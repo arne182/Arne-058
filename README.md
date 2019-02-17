@@ -9,8 +9,9 @@ Step 3 - Stir.
 What's in it?
 * Assume all features from Arne 058 are present.
 * Added ALCA above 50 MPH only
-* Added Disable LKA below 40 MPH w/ turn signals
-* Early release of Adaptive Follow mapped to Follow level position two
+* Added Disable LKA below 40 MPH w/ turn signals (from Kegman's build)
+* Limit battery charge to 60-70% to extend life (from Kegman's build)
+* Early release of Adaptive Follow mapped to Follow level position two (Shane)
 * Cruise Accel/Decel set to two MPH
 * LKA Button on Steering wheel works
 * Return of the steering wheel in the upper right
